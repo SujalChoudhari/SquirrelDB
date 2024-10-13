@@ -5,10 +5,18 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace DBManagement
 {
+	/// Story:
+	///		[Who] DB admin should be able to create an empty database
+	///		[What] Each database has a folder for it
+	///		[Value] Store data in the database
 	TEST_CLASS(Create_DB)
 	{
 	public:
 
+		/// Algorithm:
+		///		1. Create an empty database
+		///		2. Check if folder structure exists
+		///		3. Remove the folder
 		TEST_METHOD(Create_Empty)
 		{
 			std::string dbName = "testDB";
