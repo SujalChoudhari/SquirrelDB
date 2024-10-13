@@ -4,5 +4,8 @@
 int main()
 {
     std::cout << "Hello World!\n";
-    fnLibSquirrel();
+    
+    SquirrelDB::Database db = SquirrelDB::createEmptyDatabase("newDB");
+
+	return 0;
 }

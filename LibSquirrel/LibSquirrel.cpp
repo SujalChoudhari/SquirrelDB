@@ -1,9 +1,12 @@
-#include "pch.h"
-#include "framework.h"
 #include <iostream>
 
-// TODO: This is an example of a library function
-void fnLibSquirrel()
+#include "pch.h"
+#include "framework.h"
+#include "LibSquirrel.h"
+#include "Database.h"
+
+
+SquirrelDB::Database SquirrelDB::createEmptyDatabase(const std::string& dbname)
 {
-	std::cout << "Hello From Lib";
+	return SquirrelDB::Database::createNewEmptyDatabase(dbname);
 }
