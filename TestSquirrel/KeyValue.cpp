@@ -20,10 +20,13 @@ namespace KeyValuePair
 			Create_KV_Database();
 		}
 
+		~KeyValuePairDB() {
+			mDb->completelyDestroyDatabase();
+		}
+
 		TEST_METHOD(Create_KV_Database) {
 			mDb = std::make_shared<SquirrelDB::Database>(SquirrelDB::Database::createNewEmptyDatabase(mDbName));
 		}
-
 
 		TEST_METHOD(Check_Already_Set_Value)
 		{
@@ -32,7 +35,7 @@ namespace KeyValuePair
 
 			mDb->setValue(key, value);
 
-			Assert::IsTrue(value == mDb->getValue(key,"none"));
+			Assert::IsTrue(value == mDb->getValue(key, "none"));
 		}
 
 		TEST_METHOD(Check_Unset_Set_Value_Default_Return)
