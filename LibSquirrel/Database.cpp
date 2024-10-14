@@ -10,17 +10,17 @@ namespace SquirrelDB
 	{
 	}
 
-	std::filesystem::path Database::getDirectory(void)
+	std::filesystem::path Database::getDirectory(void) const
 	{
 		return mDirectory;
 	}
 
-	std::string Database::getDatabaseName(void)
+	std::string Database::getDatabaseName(void) const
 	{
 		return mDatabaseName;
 	}
 
-	std::string Database::getValue(std::string key, std::string defaultValue)
+	std::string Database::getValue(std::string key, std::string defaultValue) const
 	{
 		// check if file exists
 		if (std::filesystem::exists(mDirectory / std::filesystem::path(key + "_string" + ".kv"))) {
@@ -43,7 +43,7 @@ namespace SquirrelDB
 		}
 	}
 
-	void Database::setValue(std::string key, std::string value)
+	void Database::setValue(std::string key, std::string value) const
 	{
 		// create a entry in the folder as .kv
 		std::ofstream file;
@@ -72,5 +72,12 @@ namespace SquirrelDB
 		}
 
 		return Database(dbName, dbPath.string());
+	}
+
+	void Database::completelyDestroyDatabase(void) const
+	{
+		if (std::filesystem::exists(mDirectory)) {
+			std::filesystem::remove_all(mDirectory);
+		}
 	}
 }

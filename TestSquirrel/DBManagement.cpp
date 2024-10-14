@@ -16,7 +16,7 @@ namespace DBManagement
 		/// Algorithm:
 		///		1. Create an empty database
 		///		2. Check if folder structure exists
-		///		3. Remove the folder
+		///		3. Remove the db
 		TEST_METHOD(Create_Empty)
 		{
 			std::string dbName = "dbsss";
@@ -30,7 +30,10 @@ namespace DBManagement
 			Assert::IsTrue(std::filesystem::is_empty(db.getDirectory()));
 
 			// remove the folder
-			std::filesystem::remove(db.getDirectory());
+			db.completelyDestroyDatabase();
+
+			// does not exits
+			Assert::IsFalse(std::filesystem::exists(db.getDirectory()));
 		}
 	};
 }
