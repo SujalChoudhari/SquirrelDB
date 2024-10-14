@@ -29,6 +29,10 @@ static void addOptions(const OptionPtr& options) {
 		("v,value", "Value to set", cxxopts::value<std::string>());
 }
 
+/// <summary>
+/// handle the create argument
+/// </summary>
+/// <param name="result"> Result from the parsing </param>
 static void handleCreate(const cxxopts::ParseResult& result) {
 	if (result.count("name")) {
 		std::string dbName = result["name"].as<std::string>();
@@ -40,6 +44,10 @@ static void handleCreate(const cxxopts::ParseResult& result) {
 	}
 }
 
+/// <summary>
+///	handle the destroy argument
+/// </summary>
+/// <param name="result"> Result from the parsing </param>
 static void handleDestroy(const cxxopts::ParseResult& result) {
 	if (result.count("name")) {
 		std::string dbName = result["name"].as<std::string>();
@@ -51,12 +59,54 @@ static void handleDestroy(const cxxopts::ParseResult& result) {
 	}
 }
 
+/// <summary>
+/// handle the list databases command
+/// Prints all the databases
+/// </summary>
+/// <param name="result"> Result from the parsing </param>
 static void handleListDatabases(const cxxopts::ParseResult& result) {
 	std::cout << "Databases:" << std::endl;
 	for (auto item : SquirrelDB::Database::getAllDatabase()) {
 		std::cout << item << std::endl;
 	}
 }
+
+/// <summary>
+/// handle the set command
+/// </summary>
+/// <param name="result"> Result from the parsing </param>
+static void handleSetKeyValue(const cxxopts::ParseResult& result) {
+	if (!result.count("name") || !result.count("key") || !result.count("value")) {
+		std::cerr << "Error: Please specify a database name using --name [name], a key using --key [key], and a value using --value [value]." << std::endl;
+		return;
+	}
+
+	// load the db
+	SquirrelDB::Database db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
+
+	// set the key
+	db.setValue(result["key"].as<std::string>(), result["value"].as<std::string>());
+}
+
+/// <summary>
+/// handle the get command
+/// Prints the value for the given key
+/// </summary>
+/// <param name="result"> Result from the parsing </param>
+static void handleGetKeyValue(const cxxopts::ParseResult& result) {
+	if (!result.count("name") || !result.count("key")) {
+		std::cerr << "Error: Please specify a database name using --name [name] and a key using --key [key]" << std::endl;
+		return;
+	}
+
+	// load the db
+	SquirrelDB::Database db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
+
+	// get the key
+	std::cout << db.getValue(result["key"].as<std::string>(), "<key_not_exist>") << std::endl;
+
+}
+
 
 /// <summary>
 /// Interpret the given arguments
@@ -72,6 +122,12 @@ static void interpret(const cxxopts::ParseResult& result, const OptionPtr& optio
 	}
 	else if (result.count("list")) {
 		handleListDatabases(result);
+	}
+	else if (result.count("set")) {
+		handleSetKeyValue(result);
+	}
+	else if (result.count("get")) {
+		handleGetKeyValue(result);
 	}
 	else {
 		printHelp(options);

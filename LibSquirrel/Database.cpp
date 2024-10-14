@@ -76,6 +76,13 @@ namespace SquirrelDB
 
 	Database Database::loadExistingDatabase(const std::string dbName) {
 
+		const std::vector<std::string> list_of_databases = getAllDatabase();
+		if (std::find(list_of_databases.begin(), list_of_databases.end(), dbName) == list_of_databases.end()) {
+			std::cout << "Database '" << dbName << "' not found" << std::endl;
+			std::cout << "Creating Database '" << dbName << "'" << std::endl;
+			return createNewEmptyDatabase(dbName);
+		}
+
 		return Database(dbName, BASE_DIR);
 	}
 
