@@ -11,6 +11,10 @@ namespace SquirrelDB
 		std::filesystem::path getDirectory(void);
 		std::string getDatabaseName(void);
 
+	public:
+		std::string getValue(std::string key, std::string defaultValue);
+		void setValue(std::string key, std::string value);
+
 		static Database createNewEmptyDatabase(const std::string dbName);
 
 	private:

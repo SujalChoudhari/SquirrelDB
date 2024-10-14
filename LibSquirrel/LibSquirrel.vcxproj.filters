@@ -21,13 +21,10 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LibSquirrel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Database\Database.h">
+    <ClInclude Include="LibSquirrel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

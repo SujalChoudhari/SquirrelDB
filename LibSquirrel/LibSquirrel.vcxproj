@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="Database.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="LibSquirrel.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

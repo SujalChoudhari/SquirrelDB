@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Database.h"
 #include <filesystem>
+#include <fstream>
 
 namespace SquirrelDB
 {
@@ -19,6 +20,38 @@ namespace SquirrelDB
 		return mDatabaseName;
 	}
 
+	std::string Database::getValue(std::string key, std::string defaultValue)
+	{
+		// check if file exists
+		if (std::filesystem::exists(mDirectory / std::filesystem::path(key + "_string" + ".kv"))) {
+
+			// open the file
+			std::ifstream file;
+			file.open(mDirectory / std::filesystem::path(key + "_string" + ".kv"));
+
+			// read the file
+			std::string value;
+			file.seekg(0, std::ios::end);
+			value.reserve(file.tellg());
+			file.seekg(0, std::ios::beg);
+			value.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+			return value;
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	void Database::setValue(std::string key, std::string value)
+	{
+		// create a entry in the folder as .kv
+		std::ofstream file;
+		file.open(mDirectory / (key + "_string" + ".kv"), std::ios::out | std::ios::trunc);
+		file << value;
+		file.close();
+	}
+
 	Database Database::createNewEmptyDatabase(const std::string dbName)
 	{
 		const std::filesystem::path BASE_DIR = "./squirreldb";
@@ -35,7 +68,7 @@ namespace SquirrelDB
 			std::filesystem::create_directory(dbPath);
 		}
 		else {
-			throw std::runtime_error("Database already exist");
+			//throw std::runtime_error("Database already exist");
 		}
 
 		return Database(dbName, dbPath.string());

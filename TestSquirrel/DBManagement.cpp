@@ -19,7 +19,7 @@ namespace DBManagement
 		///		3. Remove the folder
 		TEST_METHOD(Create_Empty)
 		{
-			std::string dbName = "testDB";
+			std::string dbName = "dbsss";
 
 			SquirrelDB::Database db = SquirrelDB::createEmptyDatabase(dbName);
 
