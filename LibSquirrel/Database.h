@@ -2,6 +2,9 @@
 #include <string>
 #include <filesystem>
 
+#define BASE_DIR "./squirreldb"
+#define KV_EXTENSION "_string.kv"
+
 namespace SquirrelDB
 {
 
@@ -16,6 +19,8 @@ namespace SquirrelDB
 		void setValue(std::string key, std::string value) const;
 
 		static Database createNewEmptyDatabase(const std::string dbName);
+		static Database loadExistingDatabase(const std::string dbName);
+		static std::vector<std::string> getAllDatabase();
 		void completelyDestroyDatabase(void) const;
 
 	private:

@@ -13,10 +13,6 @@ namespace DBManagement
 	{
 	public:
 
-		/// Algorithm:
-		///		1. Create an empty database
-		///		2. Check if folder structure exists
-		///		3. Remove the db
 		TEST_METHOD(Create_Empty)
 		{
 			std::string dbName = "dbsss";
@@ -34,6 +30,45 @@ namespace DBManagement
 
 			// does not exits
 			Assert::IsFalse(std::filesystem::exists(db.getDirectory()));
+		}
+	};
+
+	/// Story:
+	///		[Who]	As a database user
+	///		[What]	Load an existing database
+	///		[Value] Use the mentioned database after creation
+	TEST_CLASS(Load_DB) {
+public:
+	Load_DB() {
+		// create db
+		SquirrelDB::createEmptyDatabase("load_db_test_db");
+	}
+
+	TEST_METHOD(Load_Existing_DB) {
+		// load db
+		SquirrelDB::Database db = SquirrelDB::loadExistingDatabase("load_db_test_db");
+
+		// db should have valid disk entry
+		Assert::IsTrue(std::filesystem::exists(db.getDirectory()));
+
+		db.completelyDestroyDatabase();
+	}
+	};
+
+
+	/// Story:
+	///		[Who] As an Admin
+	///		[What] I would like to see what databases already exists
+	///		[value] Proper knowledge of the existing databases
+	TEST_CLASS(List_ALL_DB) {
+
+		TEST_METHOD(List_ALL_DB_Test) {
+			SquirrelDB::Database db = SquirrelDB::loadExistingDatabase("get_all_test_db");
+
+			std::vector<std::string> listOfDatabase = SquirrelDB::listAllDatabases();
+
+			Assert::IsTrue(listOfDatabase.size() > 0);
+			db.completelyDestroyDatabase();
 		}
 	};
 }

@@ -20,6 +20,7 @@ static void addOptions(const OptionPtr& options) {
 	options->add_options()
 		("h,help", "Show this menu")
 		("c,create", "Create a new database")
+		("l,list", "List all databases")
 		("d,destroy", "Delete the database")
 		("s,set", "Set a key-value pair")
 		("g,get", "Get a key-value pair")
@@ -50,6 +51,13 @@ static void handleDestroy(const cxxopts::ParseResult& result) {
 	}
 }
 
+static void handleListDatabases(const cxxopts::ParseResult& result) {
+	std::cout << "Databases:" << std::endl;
+	for (auto item : SquirrelDB::Database::getAllDatabase()) {
+		std::cout << item << std::endl;
+	}
+}
+
 /// <summary>
 /// Interpret the given arguments
 /// </summary>
@@ -61,6 +69,9 @@ static void interpret(const cxxopts::ParseResult& result, const OptionPtr& optio
 	}
 	else if (result.count("destroy")) {
 		handleDestroy(result);
+	}
+	else if (result.count("list")) {
+		handleListDatabases(result);
 	}
 	else {
 		printHelp(options);
