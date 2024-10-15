@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\constants.h" />
     <ClInclude Include="include\Database.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="include\LibSquirrel.h" />

@@ -1,33 +1,38 @@
 #pragma once
-#include <string>
 #include <filesystem>
-
-#define BASE_DIR "./squirreldb"
-#define KV_EXTENSION "_string.kv"
 
 namespace SquirrelDB
 {
-
-	class Database
+	class IDatabase
 	{
 	public:
-		std::filesystem::path getDirectory(void) const;
-		std::string getDatabaseName(void) const;
+		virtual std::filesystem::path	getDirectory(void)									const = 0;
+		virtual std::string				getDatabaseName(void)								const = 0;
+		virtual std::string				getValue(std::string key, std::string defaultValue) const = 0;
+		virtual void					setValue(std::string key, std::string value)		const = 0;
+		virtual void					completelyDestroyDatabase(void)						const = 0;
 
 	public:
-		std::string getValue(std::string key, std::string defaultValue) const;
-		void setValue(std::string key, std::string value) const;
+		virtual ~IDatabase() = default;
+	};
+}
 
-		static Database createNewEmptyDatabase(const std::string dbName);
-		static Database loadExistingDatabase(const std::string dbName);
-		static std::vector<std::string> getAllDatabase();
-		void completelyDestroyDatabase(void) const;
+
+namespace SquirrelDB {
+	class Database : public IDatabase {
+
+	public:
+		class DatabaseImpl;
+		Database(const std::string& dbName, const std::string& fullPath);
+		~Database();
+
+		std::filesystem::path			getDirectory(void)									const;
+		std::string						getDatabaseName(void)								const;
+		std::string						getValue(std::string key, std::string defaultValue) const;
+		void							setValue(std::string key, std::string value)		const;
+		void							completelyDestroyDatabase(void)						const;
 
 	private:
-		std::string mDatabaseName;
-		std::filesystem::path mDirectory;
-
-
-		Database(const std::string& dbName, const std::string& fullPath);
+		std::shared_ptr<DatabaseImpl>	m_Impl;
 	};
 }

@@ -66,7 +66,7 @@ static void handleDestroy(const cxxopts::ParseResult& result) {
 /// <param name="result"> Result from the parsing </param>
 static void handleListDatabases(const cxxopts::ParseResult& result) {
 	std::cout << "Databases:" << std::endl;
-	for (auto item : SquirrelDB::Database::getAllDatabase()) {
+	for (auto& item : SquirrelDB::listAllDatabases()) {
 		std::cout << item << std::endl;
 	}
 }

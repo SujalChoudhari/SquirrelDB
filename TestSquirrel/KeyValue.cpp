@@ -25,7 +25,7 @@ namespace KeyValuePair
 		}
 
 		TEST_METHOD(Create_KV_Database) {
-			mDb = std::make_shared<SquirrelDB::Database>(SquirrelDB::Database::createNewEmptyDatabase(mDbName));
+			mDb = std::make_shared<SquirrelDB::Database>(SquirrelDB::createEmptyDatabase(mDbName));
 		}
 
 		TEST_METHOD(Check_Already_Set_Value)
