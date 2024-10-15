@@ -2,8 +2,8 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "LibSquirrel.h"
-#include "Database.h"
+#include "include/LibSquirrel.h"
+#include "include/Database.h"
 
 
 SquirrelDB::Database SquirrelDB::createEmptyDatabase(const std::string& dbname)

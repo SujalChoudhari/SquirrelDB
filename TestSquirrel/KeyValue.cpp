@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "LibSquirrel.h"
+#include "SquirrelDB.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace KeyValuePair

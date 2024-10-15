@@ -159,10 +159,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Database.h" />
+    <ClInclude Include="include\Database.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="LibSquirrel.h" />
+    <ClInclude Include="include\LibSquirrel.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SquirrelDB.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Database.cpp" />

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "LibSquirrel.h"
+#include "SquirrelDB.h"
 #include "cxxopts.h"
 
 typedef std::shared_ptr<cxxopts::Options> OptionPtr;
