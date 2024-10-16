@@ -2,7 +2,7 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "include/LibSquirrel.h"
+#include "include/Factory.h"
 #include "include/Database.h"
 #include "iostream"
 #include "include/constants.h"

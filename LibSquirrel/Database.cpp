@@ -23,8 +23,6 @@ namespace SquirrelDB
 		void					setValue(std::string key, std::string value) const;
 		void					completelyDestroyDatabase(void) const;
 
-
-
 	private:
 		std::string				m_DatabaseName;
 		std::filesystem::path	m_Directory;
