@@ -90,7 +90,7 @@ namespace SquirrelDB
 	{
 		// load the data from files into unordered_map
 		const std::filesystem::directory_iterator& iterator = std::filesystem::directory_iterator(getDirectory());
-
+		
 		for (std::filesystem::directory_entry file : iterator) {
 			if (file.exists() && file.is_regular_file() && !file.is_directory()) { // if a file
 				if (file.path().extension() == KV_STRING_EXTENSION) {	// if a kv file
