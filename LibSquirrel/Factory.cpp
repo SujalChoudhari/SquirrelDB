@@ -38,7 +38,7 @@ namespace SquirrelDB {
 			return createEmptyDatabase(dbname);
 		}
 
-		return Database(dbname, BASE_DIR);
+		return Database(dbname, (std::filesystem::path(BASE_DIR) / dbname).string());
 	}
 
 	std::vector<std::string> listAllDatabases() {
