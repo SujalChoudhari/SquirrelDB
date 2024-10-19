@@ -3,6 +3,7 @@
 #include "include/constants.h"
 #include <filesystem>
 #include <fstream>
+#include <unordered_map>
 #include <iostream>
 
 
@@ -20,12 +21,13 @@ namespace SquirrelDB
 		std::filesystem::path	getDirectory(void) const;
 		std::string				getDatabaseName(void) const;
 		std::string				getValue(std::string key, std::string defaultValue) const;
-		void					setValue(std::string key, std::string value) const;
-		void					completelyDestroyDatabase(void) const;
+		void					setValue(std::string key, std::string value);
+		void					completelyDestroyDatabase(void);
 
 	private:
 		std::string				m_DatabaseName;
 		std::filesystem::path	m_Directory;
+		std::unordered_map<std::string, std::string> m_KeyValue_Store;
 	};
 }
 
@@ -61,41 +63,18 @@ namespace SquirrelDB
 
 	std::string Database::getValue(std::string key, std::string defaultValue) const
 	{
-		// check if file exists
-		if (std::filesystem::exists(m_Impl->getDirectory() / std::filesystem::path(key + KV_EXTENSION))) {
-
-			// open the file
-			std::ifstream file;
-			file.open(m_Impl->getDirectory() / std::filesystem::path(key + KV_EXTENSION));
-
-			// read the file
-			std::string value;
-			file.seekg(0, std::ios::end);
-			value.reserve(file.tellg());
-			file.seekg(0, std::ios::beg);
-			value.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-			return value;
-		}
-		else {
-			return defaultValue;
-		}
+		return m_Impl->getValue(key, defaultValue);
 	}
 
-	void Database::setValue(std::string key, std::string value) const
+	void Database::setValue(std::string key, std::string value)
 	{
-		// create a entry in the folder as .kv
-		std::ofstream file;
-		file.open(m_Impl->getDirectory() / (key + KV_EXTENSION), std::ios::out | std::ios::trunc);
-		file << value;
-		file.close();
+		return m_Impl->setValue(key, value);
+
 	}
 
-	void Database::completelyDestroyDatabase(void) const
+	void Database::completelyDestroyDatabase(void)
 	{
-		if (std::filesystem::exists(m_Impl->getDirectory())) {
-			std::filesystem::remove_all(m_Impl->getDirectory());
-		}
+		return m_Impl->completelyDestroyDatabase();
 	}
 }
 
@@ -109,7 +88,35 @@ namespace SquirrelDB
 	Database::DatabaseImpl::DatabaseImpl(const std::string& dbName, const std::string& fullPath)
 		:m_DatabaseName(dbName), m_Directory(std::filesystem::path(fullPath))
 	{
-		;
+		// load the data from files into unordered_map
+		const std::filesystem::directory_iterator& iterator = std::filesystem::directory_iterator(getDirectory());
+		
+		for (std::filesystem::directory_entry file : iterator) {
+			if (file.exists() && file.is_regular_file() && !file.is_directory()) { // if a file
+				if (file.path().extension() == KV_STRING_EXTENSION) {	// if a kv file
+					// open the file
+					std::ifstream readableFile;
+					readableFile.open(file.path().string());
+					std::string key;
+					key = file
+						.path()
+						.filename()
+						.string()
+						.substr(0, file.path().filename().string().length() - std::string(KV_STRING_EXTENSION).length());
+
+					// read the file
+					std::string value;
+					readableFile.seekg(0, std::ios::end);
+					value.reserve(readableFile.tellg());
+					readableFile.seekg(0, std::ios::beg);
+					value.assign((std::istreambuf_iterator<char>(readableFile)), std::istreambuf_iterator<char>());
+
+					m_KeyValue_Store.insert({ key, value });
+
+				}
+			}
+		}
+
 	}
 
 	std::filesystem::path Database::DatabaseImpl::getDirectory(void) const
@@ -124,12 +131,22 @@ namespace SquirrelDB
 
 	std::string Database::DatabaseImpl::getValue(std::string key, std::string defaultValue) const
 	{
+
+		const auto& it = m_KeyValue_Store.find(key);
+
+		if (it != m_KeyValue_Store.end()) {
+			return it->second;
+		}
+
+		return defaultValue;
+
+		/* OLD FIND CODE
 		// check if file exists
-		if (std::filesystem::exists(m_Directory / std::filesystem::path(key + KV_EXTENSION))) {
+		if (std::filesystem::exists(m_Directory / std::filesystem::path(key + KV_STRING_EXTENSION))) {
 
 			// open the file
 			std::ifstream file;
-			file.open(m_Directory / std::filesystem::path(key + KV_EXTENSION));
+			file.open(m_Directory / std::filesystem::path(key + KV_STRING_EXTENSION));
 
 			// read the file
 			std::string value;
@@ -143,22 +160,29 @@ namespace SquirrelDB
 		else {
 			return defaultValue;
 		}
+		*/
 	}
 
-	void Database::DatabaseImpl::setValue(std::string key, std::string value) const
+	void Database::DatabaseImpl::setValue(std::string key, std::string value)
 	{
 		// create a entry in the folder as .kv
 		std::ofstream file;
-		file.open(m_Directory / (key + KV_EXTENSION), std::ios::out | std::ios::trunc);
+		file.open(m_Directory / (key + KV_STRING_EXTENSION), std::ios::out | std::ios::trunc);
 		file << value;
 		file.close();
+
+		// store on map
+		m_KeyValue_Store.insert({ key, value });
 	}
 
-	void Database::DatabaseImpl::completelyDestroyDatabase(void) const
+	void Database::DatabaseImpl::completelyDestroyDatabase(void)
 	{
 		if (std::filesystem::exists(m_Directory)) {
 			std::filesystem::remove_all(m_Directory);
 		}
+
+		// clear the store m_KeyValue_Store
+		m_KeyValue_Store.clear();
 	}
 }
 

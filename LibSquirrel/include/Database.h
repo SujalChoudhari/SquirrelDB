@@ -19,8 +19,8 @@ namespace SquirrelDB
 		virtual std::filesystem::path	getDirectory(void)									const = 0;
 		virtual std::string				getDatabaseName(void)								const = 0;
 		virtual std::string				getValue(std::string key, std::string defaultValue) const = 0;
-		virtual void					setValue(std::string key, std::string value)		const = 0;
-		virtual void					completelyDestroyDatabase(void)						const = 0;
+		virtual void					setValue(std::string key, std::string value) = 0;
+		virtual void					completelyDestroyDatabase(void) = 0;
 
 	public:
 		virtual ~IDatabase() = default;
@@ -39,8 +39,8 @@ namespace SquirrelDB {
 		std::filesystem::path			getDirectory(void)									const;
 		std::string						getDatabaseName(void)								const;
 		std::string						getValue(std::string key, std::string defaultValue) const;
-		void							setValue(std::string key, std::string value)		const;
-		void							completelyDestroyDatabase(void)						const;
+		void							setValue(std::string key, std::string value);
+		void							completelyDestroyDatabase(void);
 
 	private:
 		std::shared_ptr<DatabaseImpl>	m_Impl;
