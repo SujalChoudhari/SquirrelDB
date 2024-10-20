@@ -140,28 +140,6 @@ namespace SquirrelDB
 		}
 
 		return defaultValue;
-
-		/* OLD FIND CODE
-		// check if file exists
-		if (std::filesystem::exists(m_Directory / std::filesystem::path(key + KV_STRING_EXTENSION))) {
-
-			// open the file
-			std::ifstream file;
-			file.open(m_Directory / std::filesystem::path(key + KV_STRING_EXTENSION));
-
-			// read the file
-			std::string value;
-			file.seekg(0, std::ios::end);
-			value.reserve(file.tellg());
-			file.seekg(0, std::ios::beg);
-			value.assign((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-			return value;
-		}
-		else {
-			return defaultValue;
-		}
-		*/
 	}
 
 	void KeyValueStore::KeyValueStoreImpl::setValue(std::string key, std::string value)
