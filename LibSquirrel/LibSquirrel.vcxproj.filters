@@ -36,6 +36,9 @@
     <ClInclude Include="include\IDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\KeyValueStoreFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factory.cpp">
@@ -44,7 +47,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Database.cpp">
+    <ClCompile Include="KeyValueStore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyValueStoreFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

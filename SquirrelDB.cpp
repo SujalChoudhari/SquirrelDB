@@ -37,7 +37,7 @@ static void handleCreate(const cxxopts::ParseResult& result) {
 	if (result.count("name")) {
 		std::string dbName = result["name"].as<std::string>();
 		std::cout << "Creating database: " << dbName << std::endl;
-		SquirrelDB::createEmptyDatabase(dbName);
+		SquirrelDB::Factory::KVStore::createEmptyDatabase(dbName);
 	}
 	else {
 		std::cerr << "Error: Please specify a database name using --name [name]." << std::endl;
@@ -52,7 +52,7 @@ static void handleDestroy(const cxxopts::ParseResult& result) {
 	if (result.count("name")) {
 		std::string dbName = result["name"].as<std::string>();
 		std::cout << "Destroying database: " << dbName << std::endl;
-		SquirrelDB::createEmptyDatabase(dbName).completelyDestroyDatabase();
+		SquirrelDB::Factory::KVStore::createEmptyDatabase(dbName).completelyDestroyDatabase();
 	}
 	else {
 		std::cerr << "Error: Please specify a database name using --name [name]." << std::endl;
@@ -66,7 +66,7 @@ static void handleDestroy(const cxxopts::ParseResult& result) {
 /// <param name="result"> Result from the parsing </param>
 static void handleListDatabases(const cxxopts::ParseResult& result) {
 	std::cout << "Databases:" << std::endl;
-	for (auto& item : SquirrelDB::listAllDatabases()) {
+	for (auto& item : SquirrelDB::Factory::listAllDatabases()) {
 		std::cout << item << std::endl;
 	}
 }
@@ -82,7 +82,7 @@ static void handleSetKeyValue(const cxxopts::ParseResult& result) {
 	}
 
 	// load the db
-	SquirrelDB::KeyValueStore db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
+	SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::loadExistingDatabase(result["name"].as<std::string>());
 
 	// set the key
 	db.setValue(result["key"].as<std::string>(), result["value"].as<std::string>());
@@ -100,7 +100,7 @@ static void handleGetKeyValue(const cxxopts::ParseResult& result) {
 	}
 
 	// load the db
-	SquirrelDB::KeyValueStore db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
+	SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::loadExistingDatabase(result["name"].as<std::string>());
 
 	// get the key
 	std::cout << db.getValue(result["key"].as<std::string>(), "<key_not_exist>") << std::endl;
