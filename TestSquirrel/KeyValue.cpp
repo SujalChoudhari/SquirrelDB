@@ -13,7 +13,7 @@ namespace KeyValuePair
 	{
 	private:
 		std::string mDbName = "kv_check_db";
-		std::shared_ptr<SquirrelDB::Database> mDb;
+		std::shared_ptr<SquirrelDB::KeyValueStore> mDb;
 	public:
 
 		KeyValuePairDB() {
@@ -25,7 +25,7 @@ namespace KeyValuePair
 		}
 
 		TEST_METHOD(Create_KV_Database) {
-			mDb = std::make_shared<SquirrelDB::Database>(SquirrelDB::createEmptyDatabase(mDbName));
+			mDb = std::make_shared<SquirrelDB::KeyValueStore>(SquirrelDB::createEmptyDatabase(mDbName));
 		}
 
 		TEST_METHOD(Check_Already_Set_Value)

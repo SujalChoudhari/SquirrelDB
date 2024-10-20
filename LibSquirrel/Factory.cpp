@@ -3,12 +3,13 @@
 #include "pch.h"
 #include "framework.h"
 #include "include/Factory.h"
-#include "include/Database.h"
+#include "include/IDatabase.h"
+#include "include/KeyValueStore.h"
 #include "iostream"
 #include "include/constants.h"
 namespace SquirrelDB {
 
-	Database createEmptyDatabase(const std::string& dbname)
+	KeyValueStore createEmptyDatabase(const std::string& dbname)
 	{
 		// if base dir not exist create it
 		if (!std::filesystem::exists(BASE_DIR)) {
@@ -26,10 +27,10 @@ namespace SquirrelDB {
 			//throw std::runtime_error("Database already exist");
 		}
 
-		return Database(dbname, dbPath.string());
+		return KeyValueStore(dbname, dbPath.string());
 	}
 
-	Database loadExistingDatabase(const std::string& dbname)
+	KeyValueStore loadExistingDatabase(const std::string& dbname)
 	{
 		const std::vector<std::string> list_of_databases = listAllDatabases();
 		if (std::find(list_of_databases.begin(), list_of_databases.end(), dbname) == list_of_databases.end()) {
@@ -38,7 +39,7 @@ namespace SquirrelDB {
 			return createEmptyDatabase(dbname);
 		}
 
-		return Database(dbname, (std::filesystem::path(BASE_DIR) / dbname).string());
+		return KeyValueStore(dbname, (std::filesystem::path(BASE_DIR) / dbname).string());
 	}
 
 	std::vector<std::string> listAllDatabases() {

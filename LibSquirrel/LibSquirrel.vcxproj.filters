@@ -27,10 +27,13 @@
     <ClInclude Include="include\constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Database.h">
+    <ClInclude Include="include\KeyValueStore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

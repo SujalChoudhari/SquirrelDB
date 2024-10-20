@@ -17,7 +17,7 @@ namespace DBManagement
 		{
 			std::string dbName = "dbsss";
 
-			SquirrelDB::Database db = SquirrelDB::createEmptyDatabase(dbName);
+			SquirrelDB::KeyValueStore db = SquirrelDB::createEmptyDatabase(dbName);
 
 			// new folder exists
 			Assert::IsTrue(std::filesystem::exists(db.getDirectory()));
@@ -46,7 +46,7 @@ public:
 
 	TEST_METHOD(Load_Existing_DB) {
 		// load db
-		SquirrelDB::Database db = SquirrelDB::loadExistingDatabase("load_db_test_db");
+		SquirrelDB::KeyValueStore db = SquirrelDB::loadExistingDatabase("load_db_test_db");
 
 		// db should have valid disk entry
 		Assert::IsTrue(std::filesystem::exists(db.getDirectory()));
@@ -63,7 +63,7 @@ public:
 	TEST_CLASS(List_ALL_DB) {
 
 		TEST_METHOD(List_ALL_DB_Test) {
-			SquirrelDB::Database db = SquirrelDB::loadExistingDatabase("get_all_test_db");
+			SquirrelDB::KeyValueStore db = SquirrelDB::loadExistingDatabase("get_all_test_db");
 
 			std::vector<std::string> listOfDatabase = SquirrelDB::listAllDatabases();
 

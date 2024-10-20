@@ -82,7 +82,7 @@ static void handleSetKeyValue(const cxxopts::ParseResult& result) {
 	}
 
 	// load the db
-	SquirrelDB::Database db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
+	SquirrelDB::KeyValueStore db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
 
 	// set the key
 	db.setValue(result["key"].as<std::string>(), result["value"].as<std::string>());
@@ -100,7 +100,7 @@ static void handleGetKeyValue(const cxxopts::ParseResult& result) {
 	}
 
 	// load the db
-	SquirrelDB::Database db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
+	SquirrelDB::KeyValueStore db = SquirrelDB::loadExistingDatabase(result["name"].as<std::string>());
 
 	// get the key
 	std::cout << db.getValue(result["key"].as<std::string>(), "<key_not_exist>") << std::endl;

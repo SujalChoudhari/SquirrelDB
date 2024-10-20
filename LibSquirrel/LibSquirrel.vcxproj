@@ -160,9 +160,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\constants.h" />
-    <ClInclude Include="include\Database.h" />
+    <ClInclude Include="include\KeyValueStore.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\IDatabase.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SquirrelDB.h" />
   </ItemGroup>

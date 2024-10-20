@@ -1,5 +1,6 @@
 #include "pch.h"
-#include "include/Database.h"
+#include "include/IDatabase.h"
+#include "include/KeyValueStore.h"
 #include "include/constants.h"
 #include <filesystem>
 #include <fstream>
@@ -13,7 +14,7 @@
 namespace SquirrelDB
 {
 	// private to Library
-	class Database::DatabaseImpl : public IDatabase
+	class KeyValueStore::DatabaseImpl : public IDatabase
 	{
 
 	public:
@@ -39,40 +40,40 @@ namespace SquirrelDB
 namespace SquirrelDB
 {
 
-	Database::Database(const std::string& dbName, const std::string& fullPath)
+	KeyValueStore::KeyValueStore(const std::string& dbName, const std::string& fullPath)
 	{
 		m_Impl = std::make_unique<DatabaseImpl>(dbName, fullPath);
 	}
 
-	Database::~Database()
+	KeyValueStore::~KeyValueStore()
 	{
 		// unique_ptr will automatically delete m_Impl when Database is destroyed.
 		// No need to manually do anything here.
 	}
 
 
-	std::filesystem::path Database::getDirectory(void) const
+	std::filesystem::path KeyValueStore::getDirectory(void) const
 	{
 		return m_Impl->getDirectory();
 	}
 
-	std::string Database::getDatabaseName(void) const
+	std::string KeyValueStore::getDatabaseName(void) const
 	{
 		return m_Impl->getDatabaseName();
 	}
 
-	std::string Database::getValue(std::string key, std::string defaultValue) const
+	std::string KeyValueStore::getValue(std::string key, std::string defaultValue) const
 	{
 		return m_Impl->getValue(key, defaultValue);
 	}
 
-	void Database::setValue(std::string key, std::string value)
+	void KeyValueStore::setValue(std::string key, std::string value)
 	{
 		return m_Impl->setValue(key, value);
 
 	}
 
-	void Database::completelyDestroyDatabase(void)
+	void KeyValueStore::completelyDestroyDatabase(void)
 	{
 		return m_Impl->completelyDestroyDatabase();
 	}
@@ -85,7 +86,7 @@ namespace SquirrelDB
 namespace SquirrelDB
 {
 
-	Database::DatabaseImpl::DatabaseImpl(const std::string& dbName, const std::string& fullPath)
+	KeyValueStore::DatabaseImpl::DatabaseImpl(const std::string& dbName, const std::string& fullPath)
 		:m_DatabaseName(dbName), m_Directory(std::filesystem::path(fullPath))
 	{
 		// load the data from files into unordered_map
@@ -119,17 +120,17 @@ namespace SquirrelDB
 
 	}
 
-	std::filesystem::path Database::DatabaseImpl::getDirectory(void) const
+	std::filesystem::path KeyValueStore::DatabaseImpl::getDirectory(void) const
 	{
 		return m_Directory;
 	}
 
-	std::string Database::DatabaseImpl::getDatabaseName(void) const
+	std::string KeyValueStore::DatabaseImpl::getDatabaseName(void) const
 	{
 		return m_DatabaseName;
 	}
 
-	std::string Database::DatabaseImpl::getValue(std::string key, std::string defaultValue) const
+	std::string KeyValueStore::DatabaseImpl::getValue(std::string key, std::string defaultValue) const
 	{
 
 		const auto& it = m_KeyValue_Store.find(key);
@@ -163,7 +164,7 @@ namespace SquirrelDB
 		*/
 	}
 
-	void Database::DatabaseImpl::setValue(std::string key, std::string value)
+	void KeyValueStore::DatabaseImpl::setValue(std::string key, std::string value)
 	{
 		// create a entry in the folder as .kv
 		std::ofstream file;
@@ -175,7 +176,7 @@ namespace SquirrelDB
 		m_KeyValue_Store.insert({ key, value });
 	}
 
-	void Database::DatabaseImpl::completelyDestroyDatabase(void)
+	void KeyValueStore::DatabaseImpl::completelyDestroyDatabase(void)
 	{
 		if (std::filesystem::exists(m_Directory)) {
 			std::filesystem::remove_all(m_Directory);
