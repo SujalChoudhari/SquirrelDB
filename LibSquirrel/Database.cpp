@@ -14,11 +14,11 @@
 namespace SquirrelDB
 {
 	// private to Library
-	class KeyValueStore::DatabaseImpl : public IDatabase
+	class KeyValueStore::KeyValueStoreImpl : public IDatabase
 	{
 
 	public:
-		DatabaseImpl(const std::string& dbName, const std::string& fullPath);
+		KeyValueStoreImpl(const std::string& dbName, const std::string& fullPath);
 		std::filesystem::path	getDirectory(void) const;
 		std::string				getDatabaseName(void) const;
 		std::string				getValue(std::string key, std::string defaultValue) const;
@@ -42,7 +42,7 @@ namespace SquirrelDB
 
 	KeyValueStore::KeyValueStore(const std::string& dbName, const std::string& fullPath)
 	{
-		m_Impl = std::make_unique<DatabaseImpl>(dbName, fullPath);
+		m_Impl = std::make_unique<KeyValueStoreImpl>(dbName, fullPath);
 	}
 
 	KeyValueStore::~KeyValueStore()
@@ -86,7 +86,7 @@ namespace SquirrelDB
 namespace SquirrelDB
 {
 
-	KeyValueStore::DatabaseImpl::DatabaseImpl(const std::string& dbName, const std::string& fullPath)
+	KeyValueStore::KeyValueStoreImpl::KeyValueStoreImpl(const std::string& dbName, const std::string& fullPath)
 		:m_DatabaseName(dbName), m_Directory(std::filesystem::path(fullPath))
 	{
 		// load the data from files into unordered_map
@@ -120,17 +120,17 @@ namespace SquirrelDB
 
 	}
 
-	std::filesystem::path KeyValueStore::DatabaseImpl::getDirectory(void) const
+	std::filesystem::path KeyValueStore::KeyValueStoreImpl::getDirectory(void) const
 	{
 		return m_Directory;
 	}
 
-	std::string KeyValueStore::DatabaseImpl::getDatabaseName(void) const
+	std::string KeyValueStore::KeyValueStoreImpl::getDatabaseName(void) const
 	{
 		return m_DatabaseName;
 	}
 
-	std::string KeyValueStore::DatabaseImpl::getValue(std::string key, std::string defaultValue) const
+	std::string KeyValueStore::KeyValueStoreImpl::getValue(std::string key, std::string defaultValue) const
 	{
 
 		const auto& it = m_KeyValue_Store.find(key);
@@ -164,7 +164,7 @@ namespace SquirrelDB
 		*/
 	}
 
-	void KeyValueStore::DatabaseImpl::setValue(std::string key, std::string value)
+	void KeyValueStore::KeyValueStoreImpl::setValue(std::string key, std::string value)
 	{
 		// create a entry in the folder as .kv
 		std::ofstream file;
@@ -176,7 +176,7 @@ namespace SquirrelDB
 		m_KeyValue_Store.insert({ key, value });
 	}
 
-	void KeyValueStore::DatabaseImpl::completelyDestroyDatabase(void)
+	void KeyValueStore::KeyValueStoreImpl::completelyDestroyDatabase(void)
 	{
 		if (std::filesystem::exists(m_Directory)) {
 			std::filesystem::remove_all(m_Directory);

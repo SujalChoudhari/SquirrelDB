@@ -11,7 +11,7 @@ namespace SquirrelDB {
 		KeyValueStore(const std::string& dbName, const std::string& fullPath);
 		~KeyValueStore();
 
-		class DatabaseImpl;
+		class KeyValueStoreImpl;
 		std::filesystem::path			getDirectory(void)									const;
 		std::string						getDatabaseName(void)								const;
 		std::string						getValue(std::string key, std::string defaultValue) const;
@@ -19,6 +19,6 @@ namespace SquirrelDB {
 		void							completelyDestroyDatabase(void);
 
 	private:
-		std::shared_ptr<DatabaseImpl>	m_Impl;
+		std::shared_ptr<KeyValueStoreImpl>	m_Impl;
 	};
 }
