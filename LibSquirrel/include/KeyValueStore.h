@@ -5,6 +5,8 @@
 
 
 namespace SquirrelDB {
+
+	template <typename K, typename V>
 	class KeyValueStore : public IDatabase {
 
 	public:
@@ -14,8 +16,8 @@ namespace SquirrelDB {
 		class KeyValueStoreImpl;
 		std::filesystem::path			getDirectory(void)									const;
 		std::string						getDatabaseName(void)								const;
-		std::string						getValue(std::string key, std::string defaultValue) const;
-		void							setValue(std::string key, std::string value);
+		V								getValue(K key, V defaultValue)						const;
+		void							setValue(K key, V value);
 		void							completelyDestroyDatabase(void);
 
 	private:

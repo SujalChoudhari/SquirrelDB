@@ -23,43 +23,6 @@ namespace SquirrelDB::Factory {
 	}
 }
 
-namespace SquirrelDB::Factory::KVStore {
-
-	KeyValueStore createEmptyDatabase(const std::string& dbname)
-	{
-		// if base dir not exist create it
-		if (!std::filesystem::exists(BASE_DIR)) {
-			std::filesystem::create_directory(BASE_DIR);
-		}
-
-		// create a folder for a new db
-		const std::filesystem::path dbPath = std::filesystem::path(BASE_DIR) / dbname;
-
-		// create the folder if not exist, if exist throw an error
-		if (!std::filesystem::exists(dbPath)) {
-			std::filesystem::create_directory(dbPath);
-		}
-
-		return KeyValueStore(dbname, dbPath.string());
-	}
-
-	KeyValueStore loadExistingDatabase(const std::string& dbname)
-	{
-		const std::vector<std::string> list_of_databases = listAllDatabases();
-		if (std::find(list_of_databases.begin(), list_of_databases.end(), dbname) == list_of_databases.end()) {
-			std::cout << "Database '" << dbname << "' not found" << std::endl;
-			std::cout << "Creating Database '" << dbname << "'" << std::endl;
-			return createEmptyDatabase(dbname);
-		}
-
-		return KeyValueStore(dbname, (std::filesystem::path(BASE_DIR) / dbname).string());
-	}
-
-
-
-}
-
-
 
 namespace SquirrelDB::Factory::KVFileStore {
 

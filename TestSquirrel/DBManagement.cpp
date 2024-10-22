@@ -17,7 +17,7 @@ namespace DBManagement
 		{
 			std::string dbName = "dbsss";
 
-			SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::createEmptyDatabase(dbName);
+			SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::createEmptyDatabase<std::string, std::string>(dbName);
 
 			// new folder exists
 			Assert::IsTrue(std::filesystem::exists(db.getDirectory()));
@@ -41,12 +41,12 @@ namespace DBManagement
 public:
 	Load_DB() {
 		// create db
-		SquirrelDB::Factory::KVStore::createEmptyDatabase("load_db_test_db");
+		SquirrelDB::Factory::KVStore::createEmptyDatabase<std::string, std::string>("load_db_test_db");
 	}
 
 	TEST_METHOD(Load_Existing_DB) {
 		// load db
-		SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::loadExistingDatabase("load_db_test_db");
+		SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::loadExistingDatabase<std::string, std::string>("load_db_test_db");
 
 		// db should have valid disk entry
 		Assert::IsTrue(std::filesystem::exists(db.getDirectory()));
@@ -63,7 +63,7 @@ public:
 	TEST_CLASS(List_ALL_DB) {
 
 		TEST_METHOD(List_ALL_DB_Test) {
-			SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::loadExistingDatabase("get_all_test_db");
+			SquirrelDB::KeyValueStore db = SquirrelDB::Factory::KVStore::loadExistingDatabase<std::string, std::string>("get_all_test_db");
 
 			std::vector<std::string> listOfDatabase = SquirrelDB::Factory::listAllDatabases();
 
